@@ -20,27 +20,51 @@ app.get("/api/tickets", (req, resp) => {
     const searchText = `${req.query.searchText}`;
     return Ticket.find({
       title: { $regex: searchText, $options: "i" },
-    }).then((data) => resp.send(data));
+    })
+      .then((data) => resp.send(data))
+      .catch((error) =>
+        resp
+          .status(500)
+          .send("Internal Server Error, Check DB Connection" + error)
+      );
   }
-  Ticket.find({}).then((data) => resp.send(data));
+  Ticket.find({})
+    .then((data) => resp.send(data))
+    .catch((error) =>
+      resp
+        .status(500)
+        .send("Internal Server Error, Check DB Connection" + error)
+    );
 });
 
 app.patch("/api/tickets/:ticketId/done", (req, resp) => {
-  console.log(req.params);
+  if (!mongoose.isValidObjectId(req.params.ticketId))
+    return resp.status(400).send("Not Valid ObjectID");
   Ticket.findByIdAndUpdate(req.params.ticketId, {
     done: true,
-  }).then(() => {
-    resp.send({ updated: true });
-  });
+  })
+    .then((data) => {
+      if (!data) return resp.status(404).send("No Object Found");
+      resp.send({ updated: true });
+    })
+    .catch((error) => {
+      resp.status(500).send(error);
+    });
 });
 
 app.patch("/api/tickets/:ticketId/undone", (req, resp) => {
-  console.log(req.params);
+  if (!mongoose.isValidObjectId(req.params.ticketId))
+    return resp.status(400).send("Not Valid ObjectID");
   Ticket.findByIdAndUpdate(req.params.ticketId, {
     done: false,
-  }).then(() => {
-    resp.send({ updated: true });
-  });
+  })
+    .then((data) => {
+      if (!data) return resp.status(404).send("No Object Found");
+      resp.send({ updated: true });
+    })
+    .catch((error) => {
+      resp.status(500).send(error);
+    });
 });
 
 module.exports = app;
