@@ -2,26 +2,36 @@ import "./App.css";
 import { useEffect, useState } from "react";
 import axios from "axios";
 import Ticket from "./Components/Ticket";
-import SerachBar from "./Components/SerachBar";
+import SearchBar from "./Components/SearchBar";
 import Tickets from "./Components/Tickets";
 
 function App() {
   const [tickets, setTickets] = useState([]);
-  function getRequestedTickets(searchInput) {
-    if (!searchInput) {
-      axios
-        .get("/api/tickets")
-        .then(({ data }) => {
-          setTickets(data);
-          console.log("Got Tickets Successfully");
-        })
-        .catch(() => {
-          console.log("DaFUQ?");
-        });
-      return;
+
+  let cancelToken;
+
+  const handleSearchChange = async (e) => {
+    const searchTerm = e.target.value;
+
+    if (typeof cancelToken != typeof undefined) {
+      cancelToken.cancel("Operation canceled due to new request.");
     }
+    cancelToken = axios.CancelToken.source();
+
+    try {
+      const results = await axios.get(
+        `/api/tickets?searchText=${searchTerm}`,
+        { cancelToken: cancelToken.token }
+      );
+      setTickets(results.data);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  useEffect(() => {
     axios
-      .get("/api/tickets/", { params: { searchText: searchInput } })
+      .get(`/api/tickets`)
       .then(({ data }) => {
         setTickets(data);
         console.log("Got Tickets Successfully");
@@ -29,15 +39,11 @@ function App() {
       .catch(() => {
         console.log("DaFUQ?");
       });
-    return;
-  }
-  useEffect(() => {
-    getRequestedTickets();
   }, []);
 
   return (
     <>
-      <SerachBar getRequestedTickets={getRequestedTickets} />
+      <SearchBar handleSearchChange={handleSearchChange} />
       <Tickets tickets={tickets} />
     </>
   );
