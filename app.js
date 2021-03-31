@@ -16,7 +16,10 @@ const Ticket = mongoose.model("Ticket", ticketSchema);
 app.use(express.static("client/build"));
 
 app.get("/api/tickets", (req, resp) => {
+  console.log("Entered Request");
+  console.log(req.query.searchText);
   if (req.query.searchText) {
+    console.log(req.query.searchText);
     const searchText = `${req.query.searchText}`;
     return Ticket.find({
       title: { $regex: searchText, $options: "i" },
@@ -44,7 +47,7 @@ app.patch("/api/tickets/:ticketId/done", (req, resp) => {
     done: true,
   })
     .then((data) => {
-      if (!data) return resp.status(404).send("No Object Found");
+      if (!data) return resp.status(404).send("No Ticket Found");
       resp.send({ updated: true });
     })
     .catch((error) => {
@@ -59,7 +62,7 @@ app.patch("/api/tickets/:ticketId/undone", (req, resp) => {
     done: false,
   })
     .then((data) => {
-      if (!data) return resp.status(404).send("No Object Found");
+      if (!data) return resp.status(404).send("No Ticket Found");
       resp.send({ updated: true });
     })
     .catch((error) => {
@@ -68,4 +71,3 @@ app.patch("/api/tickets/:ticketId/undone", (req, resp) => {
 });
 
 module.exports = app;
-// Finish error handling and status codes
