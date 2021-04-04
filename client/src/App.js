@@ -1,13 +1,13 @@
-import "./App.css";
+import "./App.scss";
 import { useEffect, useState } from "react";
 import axios from "axios";
-import Ticket from "./Components/Ticket";
 import SearchBar from "./Components/SearchBar";
 import Tickets from "./Components/Tickets";
 
 function App() {
   const [tickets, setTickets] = useState([]);
-
+  const [renderedTickets, setRenderedTickets] = useState([]);
+  const [hiddenTickets, setHiddenTickets] = useState([]);
   let cancelToken;
 
   const handleSearchChange = async (e) => {
@@ -23,11 +23,16 @@ function App() {
         `/api/tickets?searchText=${searchTerm}`,
         { cancelToken: cancelToken.token }
       );
-      setTickets(results.data);
+      setRenderedTickets(results.data);
     } catch (error) {
       console.log(error);
     }
   };
+
+  function restore() {
+    setRenderedTickets(tickets);
+    setHiddenTickets([]);
+  }
 
   useEffect(() => {
     axios
@@ -36,15 +41,48 @@ function App() {
         setTickets(data);
         console.log("Got Tickets Successfully");
       })
-      .catch(() => {
-        console.log("DaFUQ?");
+      .catch((e) => {
+        console.log(e);
       });
   }, []);
 
+  useEffect(() => {
+    setRenderedTickets(tickets);
+  }, [tickets]);
+
+  useEffect(() => {
+    const newRenderedTickets = renderedTickets.filter(
+      (renderedTicket) =>
+        hiddenTickets.every(
+          (hiddenTicket) => hiddenTicket !== renderedTicket._id
+        )
+    );
+    console.log("After Filter ", newRenderedTickets);
+    setRenderedTickets(newRenderedTickets);
+  }, [hiddenTickets]);
+
   return (
     <>
+      <h1 className="pageTitle">Ticket Manager</h1>
       <SearchBar handleSearchChange={handleSearchChange} />
-      <Tickets tickets={tickets} />
+      <div className="hideTicketsSection">
+        {`Showing ${tickets.length} (`}
+        <span id="hideTicketsCounter">{hiddenTickets.length}</span>
+        <span> hidden ticket - </span>
+        <span
+          onClick={() => {
+            restore();
+          }}
+          id="restoreHideTickets"
+        >
+          Restore Hidden Tickets
+        </span>
+        <span>{")"}</span>
+      </div>
+      <Tickets
+        tickets={renderedTickets}
+        setHiddenTickets={setHiddenTickets}
+      />
     </>
   );
 }

@@ -16,10 +16,7 @@ const Ticket = mongoose.model("Ticket", ticketSchema);
 app.use(express.static("client/build"));
 
 app.get("/api/tickets", (req, resp) => {
-  console.log("Entered Request");
-  console.log(req.query.searchText);
   if (req.query.searchText) {
-    console.log(req.query.searchText);
     const searchText = `${req.query.searchText}`;
     return Ticket.find({
       title: { $regex: searchText, $options: "i" },
@@ -68,6 +65,19 @@ app.patch("/api/tickets/:ticketId/undone", (req, resp) => {
     .catch((error) => {
       resp.status(500).send(error);
     });
+});
+
+app.get("/api/tickets/:label", (request, response) => {
+  Ticket.find({}).then((allTickets) => {
+    const labelTickets = allTickets.filter((ticket) => {
+      console.log(ticket.labels);
+      if (ticket.labels.length > 0) {
+        return true;
+      } else return false;
+    });
+
+    response.send(labelTickets);
+  });
 });
 
 module.exports = app;

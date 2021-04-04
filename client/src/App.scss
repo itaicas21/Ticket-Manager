@@ -1,0 +1,59 @@
+#root {
+  background-color: sandybrown;
+}
+.ticket {
+  text-align: center;
+  border: 1px black solid;
+  border-radius: 10px;
+  background-color: cornflowerblue;
+  width: 80%;
+  margin: auto;
+  word-wrap: break-word;
+  position: relative;
+  .label {
+    margin: 0.5%;
+    padding: 0.5%;
+    border: 2px white solid;
+    border-radius: 5px;
+    display: inline-block;
+  }
+  .content {
+    padding: 5%;
+    text-align: left;
+  }
+  .title {
+    padding: 2.5%;
+  }
+}
+#restoreHideTickets {
+  cursor: pointer;
+}
+#restoreHideTickets:hover {
+  color: cadetblue;
+}
+#restoreHideTickets:active {
+  text-decoration: underline;
+  color: purple;
+}
+.done {
+  opacity: 0.5;
+}
+#searchInput {
+  display: block;
+  height: 2em;
+  font-size: 1em;
+  margin: auto;
+  border-radius: 15px;
+  width: 75%;
+  height: 3em;
+}
+
+.pageTitle {
+  padding-left: 12%;
+  margin-top: 0%;
+  color: blueviolet;
+}
+
+.hideTicketsSection {
+  text-align: center;
+}
