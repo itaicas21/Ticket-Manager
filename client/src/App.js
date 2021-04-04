@@ -75,9 +75,8 @@ function App() {
           }}
           id="restoreHideTickets"
         >
-          Restore Hidden Tickets
+          Restore Hidden Tickets{")"}
         </span>
-        <span>{")"}</span>
       </div>
       <Tickets
         tickets={renderedTickets}
