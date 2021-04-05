@@ -7,7 +7,13 @@ export default function HiddenTickets(props) {
       <span id="hideTicketsCounter">
         {props.hiddenTickets.length}
       </span>
-      <span> hidden ticket - </span>
+      <span>
+        {" "}
+        hidden{" "}
+        {props.hiddenTickets.length !== 1
+          ? "tickets"
+          : "ticket"} -{" "}
+      </span>
       <span
         onClick={() => {
           props.restore();

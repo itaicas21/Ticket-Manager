@@ -51,6 +51,7 @@ export default function Ticket(props) {
               .then((data) => {
                 console.log(data);
                 setDone((prevState) => !prevState);
+                //Dont know if implementation is best because the done button is not disabled
               });
           }}
         ></input>
