@@ -67,17 +67,19 @@ app.patch("/api/tickets/:ticketId/undone", (req, resp) => {
     });
 });
 
-app.get("/api/tickets/:label", (request, response) => {
-  Ticket.find({}).then((allTickets) => {
-    const labelTickets = allTickets.filter((ticket) => {
-      console.log(ticket.labels);
-      if (ticket.labels.length > 0) {
-        return true;
-      } else return false;
-    });
+//FOR FUTURE IMPLEMENTATION
 
-    response.send(labelTickets);
-  });
-});
+// app.get("/api/tickets/:label", (request, response) => {
+//   Ticket.find({}).then((allTickets) => {
+//     const labelTickets = allTickets.filter((ticket) => {
+//       console.log(ticket.labels);
+//       if (ticket.labels.length > 0) {
+//         return true;
+//       } else return false;
+//     });
+
+//     response.send(labelTickets);
+//   });
+// });
 
 module.exports = app;
