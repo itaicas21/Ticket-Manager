@@ -1,5 +1,8 @@
-import React from "react";
+// import { set } from "mongoose";
+import axios from "axios";
+import React, { useState } from "react";
 export default function Ticket(props) {
+  const [done, setDone] = useState(props.ticket.done);
   const formatDate = new Date(props.ticket.creationTime);
   let labels = null;
   if (props.ticket.labels) {
@@ -12,9 +15,7 @@ export default function Ticket(props) {
     });
   }
   return (
-    <div
-      className={`ticket ${props.ticket.done === true ? "done" : ""}`}
-    >
+    <div className={`ticket ${done === true ? "done" : ""}`}>
       <span className="title">{props.ticket.title}</span>
       <div>{labels}</div>
       <div className="content">{props.ticket.content}</div>
@@ -34,6 +35,26 @@ export default function Ticket(props) {
       >
         Hide
       </button>
+      <div>
+        Done{" "}
+        <input
+          type="checkbox"
+          value={!done}
+          checked={done}
+          onChange={() => {
+            axios
+              .patch(
+                `/api/tickets/${props.ticket._id}/${
+                  done ? "undone" : "done"
+                }`
+              )
+              .then((data) => {
+                console.log(data);
+                setDone((prevState) => !prevState);
+              });
+          }}
+        ></input>
+      </div>
     </div>
   );
 }

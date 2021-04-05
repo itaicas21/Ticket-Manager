@@ -3,7 +3,7 @@ import { useEffect, useState } from "react";
 import axios from "axios";
 import SearchBar from "./Components/SearchBar";
 import Tickets from "./Components/Tickets";
-
+import HiddenTickets from "./Components/HiddenTickets";
 function App() {
   const [tickets, setTickets] = useState([]);
   const [renderedTickets, setRenderedTickets] = useState([]);
@@ -65,19 +65,11 @@ function App() {
     <>
       <h1 className="pageTitle">Ticket Manager</h1>
       <SearchBar handleSearchChange={handleSearchChange} />
-      <div className="hideTicketsSection">
-        {`Showing ${tickets.length} (`}
-        <span id="hideTicketsCounter">{hiddenTickets.length}</span>
-        <span> hidden ticket - </span>
-        <span
-          onClick={() => {
-            restore();
-          }}
-          id="restoreHideTickets"
-        >
-          Restore Hidden Tickets{")"}
-        </span>
-      </div>
+      <HiddenTickets
+        tickets={tickets}
+        hiddenTickets={hiddenTickets}
+        restore={restore}
+      />
       <Tickets
         tickets={renderedTickets}
         setHiddenTickets={setHiddenTickets}
