@@ -1,7 +1,6 @@
 #root {
   background-color: sandybrown;
 }
-
 .ticket {
   text-align: center;
   border: 1px black solid;
@@ -11,43 +10,35 @@
   margin: auto;
   word-wrap: break-word;
   position: relative;
+  .label {
+    margin: 0.5%;
+    padding: 0.5%;
+    border: 2px white solid;
+    border-radius: 5px;
+    display: inline-block;
+  }
+  .content {
+    padding: 5%;
+    text-align: left;
+  }
+  .title {
+    padding: 2.5%;
+    padding-top: 0%;
+  }
 }
-
-.ticket .label {
-  margin: 0.5%;
-  padding: 0.5%;
-  border: 2px white solid;
-  border-radius: 5px;
-  display: inline-block;
-}
-
-.ticket .content {
-  padding: 5%;
-  text-align: left;
-}
-
-.ticket .title {
-  padding: 2.5%;
-  padding-top: 0%;
-}
-
 #restoreHideTickets {
   cursor: pointer;
 }
-
 #restoreHideTickets:hover {
   color: cadetblue;
 }
-
 #restoreHideTickets:active {
   text-decoration: underline;
   color: purple;
 }
-
 .done {
   opacity: 0.5;
 }
-
 #searchInput {
   display: block;
   height: 2em;
@@ -67,4 +58,3 @@
 .hideTicketsSection {
   text-align: center;
 }
-/*# sourceMappingURL=App.css.map */
