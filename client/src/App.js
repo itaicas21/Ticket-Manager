@@ -1,4 +1,4 @@
-import "./App.scss";
+import "./App.css";
 import { useEffect, useState } from "react";
 import axios from "axios";
 import SearchBar from "./Components/SearchBar";
@@ -13,7 +13,7 @@ function App() {
   const handleSearchChange = async (e) => {
     const searchTerm = e.target.value;
 
-    if (typeof cancelToken != typeof undefined) {
+    if (cancelToken) {
       cancelToken.cancel("Operation canceled due to new request.");
     }
     cancelToken = axios.CancelToken.source();
